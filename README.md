@@ -1,5 +1,5 @@
-# ann-xor-logic-gate-training
-This endeavors to implement the training of an XOR logic gate using artificial neural networks
+# XOR Logic Gate using Artificial Neural Networks
+Implemented a neural network using TensorFlow Keras to learn XOR logic gate behavior. This repository also features the use of Excel to look at each layer of the trained in detail.
 
 # Problems using a single multi-layered perceptron in training XOR logic gates
 Unlike OR and AND logic gates, a XOR logic gate is not linearly separable.
