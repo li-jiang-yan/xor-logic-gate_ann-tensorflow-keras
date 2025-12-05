@@ -1,0 +1,58 @@
+\documentclass[tikz, border=10pt]{standalone}
+
+\usetikzlibrary{calc}
+
+\def\layersep{3cm}
+\newcommand\nn[1]{
+    % Input layer
+    \node[neuron] (i1-#1) at (0, 3) {$A$};
+    \node[neuron] (i2-#1) at (0, 2) {$B$};
+
+    % Hidden layer
+    \path node[neuron] (h1-#1) at (\layersep,4) {$A\cdot\overline{B}$};
+    \path node[neuron] (h2-#1) at (\layersep,3) {$\overline{A}\cdot\overline{B}$};
+    \path node[neuron] (h3-#1) at (\layersep,2) {$\overline{A}\cdot B$};
+    \path node[neuron] (h4-#1) at (\layersep,1) {$A\cdot\overline{B}$};
+
+    % Output node
+    \node[neuron] (o-#1) at (2*\layersep,2.5) {$A\oplus B$};
+
+    % Connect every node in the input layer with every node in the hidden layer.
+    \foreach \source in {1,...,2}
+        \foreach \dest in {1,...,4}
+            \path (i\source-#1) edge (h\dest-#1);
+
+    % Connect every node in the hidden layer with the output layer
+    \foreach \source in {1,...,4}
+        \path (h\source-#1) edge (o-#1);
+}
+
+\begin{document}
+\begin{tikzpicture}[
+    scale=1.2,
+    shorten >=1pt,->,draw=black!70, node distance=\layersep,
+    neuron/.style={circle,fill=black!25,minimum size=20,inner sep=0},
+    edge/.style={font=\tiny},
+    weight/.style={
+        edge, fill=white, inner sep=2pt
+      }
+  ]
+  \nn{regular}
+
+  % Draw weights for all regular edges.
+  \path (i1-regular) -- (h1-regular) node[weight, pos=0.75] {$+$};
+  \path (i1-regular) -- (h2-regular) node[weight, pos=0.75] {$-$};
+  \path (i1-regular) -- (h3-regular) node[weight, pos=0.75] {$-$};
+  \path (i1-regular) -- (h4-regular) node[weight, pos=0.75] {$+$};
+  \path (i2-regular) -- (h1-regular) node[weight, pos=0.75] {$-$};
+  \path (i2-regular) -- (h2-regular) node[weight, pos=0.75] {$-$};
+  \path (i2-regular) -- (h3-regular) node[weight, pos=0.75] {$+$};
+  \path (i2-regular) -- (h4-regular) node[weight, pos=0.75] {$-$};
+
+  \path (h1-regular) -- (o-regular) node[weight, midway] {$+$};
+  \path (h2-regular) -- (o-regular) node[weight, midway] {$-$};
+  \path (h3-regular) -- (o-regular) node[weight, midway] {$+$};
+  \path (h4-regular) -- (o-regular) node[weight, midway] {$+$};
+
+\end{tikzpicture}
+\end{document}
